@@ -22,11 +22,12 @@ class _MainPageState extends State<MainPage> {
       body: screens[index],
       drawer: const NavigationDrawer(),
       bottomNavigationBar: NavigationBar(
+        height: 55,
         selectedIndex: index,
         onDestinationSelected: (index) => setState(() => this.index = index),
         destinations: const [
-          NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
-          NavigationDestination(icon: Icon(Icons.map), label: 'Map'),
+          NavigationDestination(icon: Icon(Icons.home), label: '홈'),
+          NavigationDestination(icon: Icon(Icons.map), label: '지도'),
         ],
       ),
     );
