@@ -28,38 +28,7 @@ class _HomePageState extends State<HomePage> {
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.start,
-          // ignore: prefer_const_literals_to_create_immutables
-          children: <Widget>[
-            /*CupertinoSlidingSegmentedControl<int>(
-              groupValue: convenienceGroupValue,
-              children: {
-                0: Text('전체'),
-                1: Text('CU'),
-                2: Text('GS25'),
-                3: Text('세븐일레븐'),
-                4: Text('미니스톱'),
-                5: Text('emart24'),
-              },
-              onValueChanged: (groupValue) {
-                setState(() => this.convenienceGroupValue = groupValue!);
-              },
-            ),
-            CupertinoSlidingSegmentedControl<int>(
-              groupValue: eventGroupValue,
-              children: {
-                0: Text('전체'),
-                1: Text('1+1'),
-                2: Text('2+1'),
-                3: Text('3+1'),
-                4: Text('덤증정'),
-              },
-              onValueChanged: (groupValue) {
-                setState(() => this.eventGroupValue = groupValue!);
-              },
-            ),*/
-
-            const Expanded(child: GridViewHome())
-          ],
+          children: const <Widget>[Expanded(child: GridViewHome())],
         ),
       ),
     );

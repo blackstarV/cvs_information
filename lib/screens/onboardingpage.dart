@@ -12,7 +12,7 @@ class OnBoardingPage extends StatelessWidget {
             PageViewModel(
               title: '모든 편의점 할인 행사',
               body: '모든 편의점의 1+1, 2+1, 3+1, 덤증정을 어플 하나로 만나보세요.',
-              image: buildImage('images/convenience_5.jpg'),
+              image: buildImage('images/convenience_5.png'),
               decoration: getPageDecoration(),
             ),
             PageViewModel(
@@ -34,43 +34,42 @@ class OnBoardingPage extends StatelessWidget {
               decoration: getPageDecoration(),
             ),
           ],
-          done: Text('확인', style: TextStyle(fontWeight: FontWeight.w600)),
+          done: const Text('확인', style: TextStyle(fontWeight: FontWeight.w600)),
           onDone: () => goToHome(context),
           showSkipButton: true,
-          skip: Text('건너뛰기'),
+          skip: const Text('건너뛰기'),
           onSkip: () => goToHome(context),
-          next: Text('다음'),
+          next: const Text('다음'),
           dotsDecorator: getDotDecoration(),
           onChange: (index) => print('Page $index selected'),
           // isProgressTap: false,
           // isProgress: false,
           // showNextButton: false,
           // freeze: true,
-          animationDuration: 600,
+          // animationDuration: 600,
         ),
       );
 
   void goToHome(context) => Navigator.of(context).pushReplacement(
-        MaterialPageRoute(builder: (_) => MainPage()),
+        MaterialPageRoute(builder: (_) => const MainPage()),
       );
 
   Widget buildImage(String path) =>
       Center(child: Image.asset(path, width: 350));
 
   DotsDecorator getDotDecoration() => DotsDecorator(
-        color: Color(0xFFBDBDBD),
+        color: const Color(0xFFBDBDBD),
         //activeColor: Colors.orange,
-        size: Size(10, 10),
-        activeSize: Size(22, 10),
+        size: const Size(10, 10),
+        activeSize: const Size(22, 10),
         activeShape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(24),
         ),
       );
 
-  PageDecoration getPageDecoration() => PageDecoration(
+  PageDecoration getPageDecoration() => const PageDecoration(
         titleTextStyle: TextStyle(fontSize: 28, fontWeight: FontWeight.bold),
         bodyTextStyle: TextStyle(fontSize: 20),
         imagePadding: EdgeInsets.all(24),
-        pageColor: Colors.white,
       );
 }

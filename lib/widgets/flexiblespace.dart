@@ -20,6 +20,7 @@ class _FlexibleSpaceState extends State<FlexibleSpace> {
         body: Column(
           children: [
             Container(
+              // 제품명 검색창
               margin: const EdgeInsets.fromLTRB(10, 10, 10, 10),
               child: TextField(
                 decoration: InputDecoration(
@@ -31,9 +32,11 @@ class _FlexibleSpaceState extends State<FlexibleSpace> {
               ),
             ),
             Container(
+                // 편의점 필터 Chip
                 margin: const EdgeInsets.fromLTRB(5, 0, 5, 0),
                 child: const FilterChipConvenience()),
             Container(
+                // 행사 필터 Chip
                 margin: const EdgeInsets.fromLTRB(5, 5, 5, 5),
                 child: const FilterChipEvent()),
           ],

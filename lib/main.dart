@@ -1,11 +1,13 @@
+import 'dart:ui' as ui;
 import 'package:cvs_information/Screens/onboardingpage.dart';
-import 'package:cvs_information/screens/mainpage.dart';
 import 'package:cvs_information/services/geolocator_service.dart';
 import 'package:cvs_information/services/places_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cvs_information/color_schemes.g.dart';
+import 'package:flutter/services.dart';
 import 'package:geolocator/geolocator.dart';
+import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 
 import 'models/place.dart';
@@ -27,7 +29,7 @@ class MyApp extends StatelessWidget {
         FutureProvider(
             create: (context) => locatorService.getLocation(),
             initialData: null),
-        ProxyProvider<Position, Future<List<Place>>?>(
+        ProxyProvider<Position?, Future<List<Place>?>?>(
           update: (context, position, places) {
             return (position != null)
                 ? placesService.getPlaces(position.latitude, position.longitude)
@@ -46,7 +48,7 @@ class MyApp extends StatelessWidget {
           colorScheme: darkColorScheme,
         ),
         themeMode: ThemeMode.system, // 테마모드가 시스템설정을 따라가게 한다.
-        home: OnBoardingPage(),
+        home: const OnBoardingPage(),
       ),
     );
   }
