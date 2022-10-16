@@ -27,7 +27,7 @@ class _FlexibleSpaceState extends State<FlexibleSpace> {
                     suffixIcon: const Icon(Icons.search),
                     hintText: '제품명',
                     border: OutlineInputBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(25),
                     )),
               ),
             ),

@@ -1,5 +1,4 @@
 import 'package:cvs_information/models/geometry.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:google_maps_flutter/google_maps_flutter.dart';
 
 class Place {
@@ -8,6 +7,7 @@ class Place {
   final dynamic userRatingCount; // 리뷰 개수
   final String vicinity; // 주소
   final Geometry geometry; // 위도, 경도
+  // ignore: non_constant_identifier_names
   final String place_id; // place 고유 id 값
   final BitmapDescriptor icon;
 
@@ -17,6 +17,7 @@ class Place {
       required this.rating,
       required this.userRatingCount,
       required this.vicinity,
+      // ignore: non_constant_identifier_names
       required this.place_id,
       required this.icon});
 

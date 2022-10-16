@@ -5,6 +5,7 @@ class MarkerService {
   List<Marker> getMarkers(List<Place> places) {
     var markers = <Marker>[];
 
+    // ignore: avoid_function_literals_in_foreach_calls
     places.forEach((place) async {
       Marker marker = Marker(
         markerId: MarkerId(place.name),

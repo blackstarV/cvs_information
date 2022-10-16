@@ -42,7 +42,7 @@ class _FilterChipConvenienceState extends State<FilterChipConvenience> {
                 }),
                 selected: filterChip.isSelected,
                 checkmarkColor: filterChip.color,
-                selectedColor: Color.fromARGB(255, 201, 114, 107),
+                selectedColor: const Color.fromARGB(255, 201, 114, 107),
               ))
           .toList(),
     );

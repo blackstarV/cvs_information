@@ -1,5 +1,6 @@
 import 'package:cvs_information/screens/mappage.dart';
 import 'package:cvs_information/widgets/flexiblespace.dart';
+import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
 import 'package:cvs_information/widgets/scroll_hide.dart';
 import 'package:flutter/material.dart';
@@ -70,19 +71,33 @@ class _MainPageState extends State<MainPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: screens[index],
-        drawer: const NavigationDrawer(),
-        bottomNavigationBar: ScrollToHideWidget(
-            scrollController: scrollController,
-            child: NavigationBar(
-              height: 55,
-              selectedIndex: index,
-              onDestinationSelected: (index) =>
-                  setState(() => this.index = index),
-              destinations: const [
-                NavigationDestination(icon: Icon(Icons.home), label: '홈'),
-                NavigationDestination(icon: Icon(Icons.map), label: '지도'),
-              ],
-            )));
+      body: screens[index],
+      drawer: const NavigationDrawer(),
+      bottomNavigationBar: ScrollToHideWidget(
+          scrollController: scrollController,
+          child: NavigationBar(
+            height: 55,
+            selectedIndex: index,
+            onDestinationSelected: (index) =>
+                setState(() => this.index = index),
+            destinations: const [
+              NavigationDestination(icon: Icon(Icons.home), label: '홈'),
+              NavigationDestination(icon: Icon(Icons.map), label: '지도'),
+            ],
+          )),
+      floatingActionButton: ScrollToHideWidget(
+        scrollController: scrollController,
+        child: FloatingActionButton(
+          child: const Icon(Icons.qr_code),
+          onPressed: () => showModalBottomSheet(
+              shape: const RoundedRectangleBorder(
+                  borderRadius:
+                      BorderRadius.vertical(top: Radius.circular(20))),
+              context: context,
+              builder: (context) => const MemberShipWidget()),
+        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+    );
   }
 }

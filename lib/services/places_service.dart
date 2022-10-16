@@ -1,4 +1,4 @@
-import 'package:google_maps_flutter/google_maps_flutter.dart';
+// ignore_for_file: unnecessary_brace_in_string_interps
 
 import '../models/place.dart';
 import 'package:http/http.dart' as http;
