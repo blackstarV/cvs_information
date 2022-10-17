@@ -44,7 +44,10 @@ dependencies:
   introduction_screen: ^3.0.2
   flutter_rating_bar: ^4.0.1
   sliding_up_panel: ^2.0.0+1
-
+  barcode_widget: ^2.0.3
+  pattern_formatter: ^2.0.0
+  shared_preferences: ^2.0.15
+  
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -74,7 +77,12 @@ flutter:
       - images/gs25.png
       - images/seven_eleven.png
       - images/emart24.jpg
-      - images/ministop.jpg            
+      - images/ministop.jpg
+      - images/naver.jpg
+      - images/skt.jpg
+      - images/kt.jpg
+      - images/lguplus.png
+      - images/kakaopay.jpg   
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

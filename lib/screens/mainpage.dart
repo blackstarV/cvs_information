@@ -1,4 +1,6 @@
+import 'package:cvs_information/screens/eventpage.dart';
 import 'package:cvs_information/screens/mappage.dart';
+import 'package:cvs_information/screens/wishlistpage.dart';
 import 'package:cvs_information/widgets/flexiblespace.dart';
 import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
@@ -66,8 +68,11 @@ class _MainPageState extends State<MainPage> {
             )),
       ]),
     ),
+    const EventPage(),
     const MapPage(),
+    const WishlistPage()
   ];
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -82,7 +87,10 @@ class _MainPageState extends State<MainPage> {
                 setState(() => this.index = index),
             destinations: const [
               NavigationDestination(icon: Icon(Icons.home), label: '홈'),
+              NavigationDestination(
+                  icon: Icon(Icons.event_note_sharp), label: '이벤트'),
               NavigationDestination(icon: Icon(Icons.map), label: '지도'),
+              NavigationDestination(icon: Icon(Icons.favorite), label: '찜'),
             ],
           )),
       floatingActionButton: ScrollToHideWidget(
@@ -90,6 +98,7 @@ class _MainPageState extends State<MainPage> {
         child: FloatingActionButton(
           child: const Icon(Icons.qr_code),
           onPressed: () => showModalBottomSheet(
+              isScrollControlled: true,
               shape: const RoundedRectangleBorder(
                   borderRadius:
                       BorderRadius.vertical(top: Radius.circular(20))),

@@ -16,6 +16,7 @@ class _FlexibleSpaceState extends State<FlexibleSpace> {
         appBar: AppBar(
           title: const Text('편의점 정보'),
           centerTitle: true,
+          automaticallyImplyLeading: false,
         ),
         body: Column(
           children: [
