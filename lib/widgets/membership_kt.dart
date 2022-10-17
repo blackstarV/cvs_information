@@ -39,9 +39,12 @@ class _KTScreenState extends State<KTScreen> {
   Widget build(BuildContext context) {
     return Column(mainAxisAlignment: MainAxisAlignment.center, children: [
       BarcodeWidget(
-        width: 230,
+        backgroundColor: Colors.white,
+        padding: EdgeInsets.all(5),
+        width: 260,
         height: 100,
         barcode: Barcode.code128(),
+        style: TextStyle(color: Colors.black),
         data: stringData.replaceAll(' ', ''),
       ),
       Container(
