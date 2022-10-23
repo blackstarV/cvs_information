@@ -1,6 +1,6 @@
-import 'package:cvs_information/screens/eventpage.dart';
 import 'package:cvs_information/screens/mappage.dart';
 import 'package:cvs_information/screens/wishlistpage.dart';
+import 'package:cvs_information/widgets/filter_chip_convenience.dart';
 import 'package:cvs_information/widgets/flexiblespace.dart';
 import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
@@ -39,8 +39,8 @@ class _MainPageState extends State<MainPage> {
       headerSliverBuilder: (context, innerBoxIsScrolled) {
         return [
           const SliverAppBar(
-            collapsedHeight: 302, // 접힌 높이
-            expandedHeight: 302, // 펴진 높이
+            collapsedHeight: 245, // 접힌 높이
+            expandedHeight: 245, // 펴진 높이
             floating: true,
             snap: true,
             centerTitle: true,
@@ -68,7 +68,33 @@ class _MainPageState extends State<MainPage> {
             )),
       ]),
     ),
-    const EventPage(),
+    Column(
+      children: [
+        const SizedBox(height: 10),
+        Expanded(
+          child: Scaffold(
+            body: ListView.builder(
+                controller: scrollController,
+                itemCount: 20,
+                itemBuilder: ((context, index) {
+                  return Card(
+                      child: ListTile(
+                    leading: const Icon(
+                        size: 60, Icons.image), // 이벤트 페이지 사진 (Image로 대체 예정)
+                    title: const Text('Title'), // 이벤트 페이지 제목
+                    subtitle: const Text("subTitle"), // 이벤트 페이지 부제목
+                    onTap: () {}, // 이벤트 페이지 링크로 접속
+                  ));
+                })),
+            bottomNavigationBar: const SingleChildScrollView(
+                // 편의점 필터 Chip
+                padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
+                scrollDirection: Axis.horizontal,
+                child: FilterChipConvenience()),
+          ),
+        ),
+      ],
+    ),
     const MapPage(),
     const WishlistPage()
   ];

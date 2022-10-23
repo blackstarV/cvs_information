@@ -3,14 +3,14 @@ import 'package:flutter/material.dart';
 import 'package:pattern_formatter/pattern_formatter.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
-class KTScreen extends StatefulWidget {
-  const KTScreen({super.key});
+class LGUPlusScreen extends StatefulWidget {
+  const LGUPlusScreen({super.key});
 
   @override
-  State<KTScreen> createState() => _KTScreenState();
+  State<LGUPlusScreen> createState() => _LGUPlusScreenState();
 }
 
-class _KTScreenState extends State<KTScreen> {
+class _LGUPlusScreenState extends State<LGUPlusScreen> {
   String stringData = '';
   String cardNumber = '';
   late SharedPreferences preferences;
@@ -25,7 +25,7 @@ class _KTScreenState extends State<KTScreen> {
 
   Future init() async {
     preferences = await SharedPreferences.getInstance();
-    final String? cardNumber = preferences.getString('cardNumberKT');
+    final String? cardNumber = preferences.getString('cardNumberLGUPlus');
     if (cardNumber == null) return;
 
     setState(() {
@@ -68,7 +68,8 @@ class _KTScreenState extends State<KTScreen> {
               setState(() {
                 stringData = value; // 바코드에 반영
               });
-              preferences.setString('cardNumberKT', stringData); // 사용자 디바이스에 저장
+              preferences.setString(
+                  'cardNumberLGUPlus', stringData); // 사용자 디바이스에 저장
             },
           ),
         ),

@@ -11,9 +11,8 @@ class MarkerService {
         markerId: MarkerId(place.name),
         draggable: false,
         icon: place.icon,
-        infoWindow: InfoWindow(title: place.name, snippet: place.vicinity),
-        position:
-            LatLng(place.geometry.location.lat, place.geometry.location.lng),
+        infoWindow: InfoWindow(title: place.name, snippet: place.address_name),
+        position: LatLng(place.lat, place.lng),
       );
 
       markers.add(marker);

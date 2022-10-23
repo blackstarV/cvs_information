@@ -1,4 +1,5 @@
 import 'package:cvs_information/widgets/membership_kt.dart';
+import 'package:cvs_information/widgets/membership_lguplus.dart';
 import 'package:flutter/material.dart';
 
 class MemberShipWidget extends StatefulWidget {
@@ -17,9 +18,7 @@ class _MemberShipWidgetState extends State<MemberShipWidget> {
       height: 180,
     ),
     const KTScreen(),
-    Container(
-      height: 180,
-    ),
+    const LGUPlusScreen(),
     Container(
       height: 180,
     ),
@@ -124,7 +123,7 @@ class _MemberShipWidgetState extends State<MemberShipWidget> {
               ),
             ],
           ),
-          SizedBox(height: 50),
+          const SizedBox(height: 50),
           screens[index]
         ],
       ),

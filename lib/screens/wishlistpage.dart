@@ -10,6 +10,6 @@ class WishlistPage extends StatefulWidget {
 class _WishlistPageState extends State<WishlistPage> {
   @override
   Widget build(BuildContext context) {
-    return Container(alignment: Alignment.center, child: Text('찜'));
+    return Container(alignment: Alignment.center, child: const Text('찜'));
   }
 }

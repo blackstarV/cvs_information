@@ -10,7 +10,6 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import '../models/place.dart';
-import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:sliding_up_panel/sliding_up_panel.dart';
 
 class MapPage extends StatefulWidget {
@@ -98,14 +97,8 @@ class _MapPageState extends State<MapPage> {
                                             geoService.getDistance(
                                                 currentPosition.latitude,
                                                 currentPosition.longitude,
-                                                places[index]
-                                                    .geometry
-                                                    .location
-                                                    .lat,
-                                                places[index]
-                                                    .geometry
-                                                    .location
-                                                    .lng),
+                                                places[index].lat,
+                                                places[index].lng),
                                         initialData: null,
                                         child: Card(
                                           child: ListTile(
@@ -118,12 +111,8 @@ class _MapPageState extends State<MapPage> {
                                                           CameraPosition(
                                                               target: LatLng(
                                                                   places[index]
-                                                                      .geometry
-                                                                      .location
                                                                       .lat,
                                                                   places[index]
-                                                                      .geometry
-                                                                      .location
                                                                       .lng),
                                                               zoom: 16.0)));
                                             },
@@ -133,31 +122,6 @@ class _MapPageState extends State<MapPage> {
                                               crossAxisAlignment:
                                                   CrossAxisAlignment.start,
                                               children: [
-                                                //----------------------------------------------------------------------
-                                                const SizedBox(
-                                                  height: 5.0,
-                                                ),
-                                                //----------------------------------------------------------------------
-                                                (places[index].rating !=
-                                                        0.0) // rating이 있을 땐 표시, 없으면 표시 안함
-                                                    ? Row(
-                                                        children: [
-                                                          RatingBarIndicator(
-                                                            rating:
-                                                                places[index]
-                                                                    .rating,
-                                                            itemBuilder: (context,
-                                                                    index) =>
-                                                                const Icon(
-                                                                    Icons.star),
-                                                            itemCount: 5,
-                                                            itemSize: 10.0,
-                                                            direction:
-                                                                Axis.horizontal,
-                                                          )
-                                                        ],
-                                                      )
-                                                    : Row(),
                                                 //----------------------------------------------------------------------
                                                 const SizedBox(
                                                   height: 5.0,
@@ -173,7 +137,7 @@ class _MapPageState extends State<MapPage> {
                                                                     .start,
                                                             children: [
                                                               Text(places[index]
-                                                                  .vicinity),
+                                                                  .address_name),
                                                               (meters >= 1000)
                                                                   ? Text(
                                                                       '${(meters / 1000).toStringAsFixed(1)} km')
@@ -192,7 +156,7 @@ class _MapPageState extends State<MapPage> {
                                                   Icons.info_outline),
                                               onPressed: () {
                                                 _launchMapsUrl(
-                                                    places[index].place_id);
+                                                    places[index].place_url);
                                               },
                                             ),
                                           ),
@@ -232,13 +196,13 @@ class _MapPageState extends State<MapPage> {
   }
 
   // ignore: non_constant_identifier_names
-  void _launchMapsUrl(String place_id) async {
-    final url = 'https://www.google.com/maps/place/?q=place_id:$place_id';
-
-    if (await canLaunchUrl(Uri.parse(url))) {
-      await launchUrl(Uri.parse(url));
+  void _launchMapsUrl(String place_url) async {
+    if (await canLaunchUrl(Uri.parse(place_url))) {
+      await launchUrl(Uri.parse(place_url));
     } else {
-      throw '불러올 수 없습니다. $url';
+      throw ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+          content: Text('불러올 수 없습니다.\n$place_url'),
+          duration: const Duration(seconds: 1)));
     }
   }
 }
