@@ -1,4 +1,6 @@
+import 'package:cvs_information/models/productCU.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import '../models/image_filter_chip_data.dart';
 
 class FilterChipConvenience extends StatefulWidget {
@@ -11,38 +13,42 @@ class FilterChipConvenience extends StatefulWidget {
 class _FilterChipConvenienceState extends State<FilterChipConvenience> {
   final double spacing = 8;
   List<ImageFilterChipData> filterChips = FilterChips.all;
-
   @override
   Widget build(BuildContext context) {
     return Wrap(
       runSpacing: spacing,
       spacing: spacing,
       children: filterChips
-          .map((filterChip) => FilterChip(
-                avatar: filterChip.image,
-                label: Text(filterChip.label),
-                labelStyle: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  color: filterChip.color,
-                ),
-                backgroundColor: filterChip.color.withOpacity(0.1),
+          .map((filterChip) => Consumer<List<ProductCU>?>(
+                builder: (_, productCU, __) => FilterChip(
+                  avatar: filterChip.image,
+                  label: Text(filterChip.label),
+                  labelStyle: TextStyle(
+                    fontWeight: FontWeight.bold,
+                    color: filterChip.color,
+                  ),
+                  backgroundColor: filterChip.color.withOpacity(0.1),
 
-                // 선택이 됬을 때
-                onSelected: (isSelected) => setState(() {
-                  filterChips = filterChips.map((otherChip) {
-                    return filterChip == otherChip
-                        ? otherChip.copy(
-                            isSelected: isSelected,
-                            color: filterChip.color,
-                            image: filterChip.image,
-                            label: filterChip.label,
-                          )
-                        : otherChip;
-                  }).toList();
-                }),
-                selected: filterChip.isSelected,
-                checkmarkColor: filterChip.color,
-                selectedColor: const Color.fromARGB(255, 201, 114, 107),
+                  // 선택이 됬을 때
+                  onSelected: (isSelected) => setState(() {
+                    productCU
+                        ?.sort((a, b) => b.name.compareTo(a.name)); // 내림차순 정렬
+
+                    filterChips = filterChips.map((otherChip) {
+                      return filterChip == otherChip
+                          ? otherChip.copy(
+                              isSelected: isSelected,
+                              color: filterChip.color,
+                              image: filterChip.image,
+                              label: filterChip.label,
+                            )
+                          : otherChip;
+                    }).toList();
+                  }),
+                  selected: filterChip.isSelected,
+                  checkmarkColor: filterChip.color,
+                  selectedColor: const Color.fromARGB(255, 201, 114, 107),
+                ),
               ))
           .toList(),
     );

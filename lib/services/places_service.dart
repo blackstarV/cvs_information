@@ -5,10 +5,9 @@ import 'package:http/http.dart' as http;
 import 'dart:convert' as convert;
 
 class PlacesService {
-  final key = 'AIzaSyA1gLhWNZQZt3Fq2_ppqMYOX6kg69Id51c';
   Map<String, String> headers = {
     "Authorization":
-        "KakaoAK 550709688e2b0a1c0a77c8c8d43e8868" // Kakao REST API
+        "KakaoAK 550709688e2b0a1c0a77c8c8d43e8868", // Kakao REST API
   };
 
   Future<List<Place>> getPlaces(double lat, double lng) async {

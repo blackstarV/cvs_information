@@ -35,18 +35,17 @@ dependencies:
 
   # The following adds the Cupertino Icons font to your application.
   # Use with the CupertinoIcons class for iOS style icons.
-  cupertino_icons: ^1.0.2
-  google_maps_flutter: ^2.2.0
-  geolocator: ^9.0.2
-  provider: ^6.0.3
-  url_launcher: ^6.1.5
-  http: ^0.13.5
-  introduction_screen: ^3.0.2
-  flutter_rating_bar: ^4.0.1
-  sliding_up_panel: ^2.0.0+1
-  barcode_widget: ^2.0.3
-  pattern_formatter: ^2.0.0
-  shared_preferences: ^2.0.15
+  cupertino_icons: ^1.0.2 # 아이폰 디자인 사용
+  google_maps_flutter: ^2.2.0 # 구글 맵 사용
+  geolocator: ^9.0.2 # 현재 위치 불러오기 
+  provider: ^6.0.3 # provider를 통한 관심사 분리, 데이터 공유, 간결한 코드 (데이터의 생산과 소비)
+  url_launcher: ^6.1.5 # url 접속
+  http: ^0.13.5 # http 사용
+  introduction_screen: ^3.0.2 # 소개 화면 
+  sliding_up_panel: ^2.0.0+1 # Sliding Up Panel 사용
+  barcode_widget: ^2.0.3 # 바코드 생성
+  pattern_formatter: ^2.0.0 # 카드번호 패턴
+  shared_preferences: ^2.0.15 # 저장,불러오기 기능
   
 dev_dependencies:
   flutter_test:

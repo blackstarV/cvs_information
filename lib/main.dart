@@ -1,7 +1,10 @@
 import 'package:cvs_information/Screens/mainpage.dart';
 import 'package:cvs_information/Screens/onboardingpage.dart';
+import 'package:cvs_information/models/productCU.dart';
+import 'package:cvs_information/models/productGS25.dart';
 import 'package:cvs_information/services/geolocator_service.dart';
 import 'package:cvs_information/services/places_service.dart';
+import 'package:cvs_information/services/productCU_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cvs_information/color_schemes.g.dart';
@@ -18,6 +21,7 @@ Future<void> main() async {
   SharedPreferences preferences = await SharedPreferences.getInstance();
   initScreen = preferences.getBool('initScreen'); // 로드
   await preferences.setBool('initScreen', true); // 세이브
+
   runApp(MyApp());
 }
 
@@ -26,11 +30,14 @@ class MyApp extends StatelessWidget {
 
   final locatorService = GeoLocatorService();
   final placesService = PlacesService();
-
+  final productCUService = ProductCUService();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
+        FutureProvider(
+            create: (context) => productCUService.getProducts(),
+            initialData: null),
         FutureProvider(
             create: (context) => locatorService.getLocation(),
             initialData: null),

@@ -1,3 +1,4 @@
+import 'package:cvs_information/models/productCU.dart';
 import 'package:cvs_information/screens/mappage.dart';
 import 'package:cvs_information/screens/wishlistpage.dart';
 import 'package:cvs_information/widgets/filter_chip_convenience.dart';
@@ -6,6 +7,7 @@ import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
 import 'package:cvs_information/widgets/scroll_hide.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -14,17 +16,6 @@ class MainPage extends StatefulWidget {
   State<MainPage> createState() => _MainPageState();
 }
 
-List<String> items = [
-  'A',
-  'B',
-  'C',
-  'D',
-  'E',
-  'F',
-  'G',
-  'H',
-  'I',
-];
 final ScrollController scrollController = ScrollController();
 
 @override
@@ -39,6 +30,9 @@ class _MainPageState extends State<MainPage> {
       headerSliverBuilder: (context, innerBoxIsScrolled) {
         return [
           const SliverAppBar(
+            shape: RoundedRectangleBorder(
+                borderRadius:
+                    BorderRadius.vertical(bottom: Radius.circular(20))),
             collapsedHeight: 245, // 접힌 높이
             expandedHeight: 245, // 펴진 높이
             floating: true,
@@ -49,23 +43,25 @@ class _MainPageState extends State<MainPage> {
         ];
       },
       body: CustomScrollView(slivers: [
-        SliverGrid(
-            gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
-              maxCrossAxisExtent: 250,
-              mainAxisSpacing: 10,
-            ),
-            delegate: SliverChildBuilderDelegate(
-              (context, index) {
-                return Container(
-                  decoration: const BoxDecoration(
-                      color: Color.fromARGB(255, 224, 146, 146)),
-                  child: GridTile(
-                    child: Center(child: Text(items[index])),
-                  ),
-                );
-              },
-              childCount: items.length,
-            )),
+        Consumer<List<ProductCU>?>(
+          builder: (_, productCU, __) => SliverGrid(
+              gridDelegate: const SliverGridDelegateWithMaxCrossAxisExtent(
+                maxCrossAxisExtent: 250,
+                mainAxisSpacing: 10,
+              ),
+              delegate: SliverChildBuilderDelegate(
+                (context, index) {
+                  return Container(
+                      decoration: const BoxDecoration(
+                          color: Color.fromARGB(255, 224, 146, 146)),
+                      child: (productCU != null)
+                          ? GridTile(
+                              child: Center(child: Text(productCU[index].name)))
+                          : const Center(child: CircularProgressIndicator()));
+                },
+                childCount: productCU?.length,
+              )),
+        ),
       ]),
     ),
     Column(
