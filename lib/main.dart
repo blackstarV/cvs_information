@@ -1,5 +1,5 @@
-import 'package:cvs_information/Screens/mainpage.dart';
-import 'package:cvs_information/Screens/onboardingpage.dart';
+import 'package:cvs_information/Screens/main_page.dart';
+import 'package:cvs_information/Screens/onboarding_page.dart';
 import 'package:cvs_information/models/productCU.dart';
 import 'package:cvs_information/models/productGS25.dart';
 import 'package:cvs_information/services/geolocator_service.dart';
@@ -36,8 +36,9 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         FutureProvider(
-            create: (context) => productCUService.getProducts(),
-            initialData: null),
+          create: (context) => productCUService.getProducts(),
+          initialData: null,
+        ),
         FutureProvider(
             create: (context) => locatorService.getLocation(),
             initialData: null),

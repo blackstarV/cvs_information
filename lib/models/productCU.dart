@@ -1,3 +1,5 @@
+import 'package:flutter/cupertino.dart';
+
 class ProductCU {
   final String name; // 이름
   final String event; // 행사 유형

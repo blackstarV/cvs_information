@@ -46,7 +46,7 @@ dependencies:
   barcode_widget: ^2.0.3 # 바코드 생성
   pattern_formatter: ^2.0.0 # 카드번호 패턴
   shared_preferences: ^2.0.15 # 저장,불러오기 기능
-  
+  pull_to_refresh: ^2.0.0 # 당겨서 새로고침
 dev_dependencies:
   flutter_test:
     sdk: flutter

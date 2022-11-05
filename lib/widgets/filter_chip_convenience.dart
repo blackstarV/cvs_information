@@ -28,23 +28,22 @@ class _FilterChipConvenienceState extends State<FilterChipConvenience> {
                     color: filterChip.color,
                   ),
                   backgroundColor: filterChip.color.withOpacity(0.1),
-
                   // 선택이 됬을 때
-                  onSelected: (isSelected) => setState(() {
-                    productCU
-                        ?.sort((a, b) => b.name.compareTo(a.name)); // 내림차순 정렬
-
-                    filterChips = filterChips.map((otherChip) {
-                      return filterChip == otherChip
-                          ? otherChip.copy(
-                              isSelected: isSelected,
-                              color: filterChip.color,
-                              image: filterChip.image,
-                              label: filterChip.label,
-                            )
-                          : otherChip;
-                    }).toList();
-                  }),
+                  onSelected: (isSelected) {
+                    setState(() {
+                      productCU?.sort((a, b) => b.name.compareTo(a.name));
+                      filterChips = filterChips.map((otherChip) {
+                        return filterChip == otherChip
+                            ? otherChip.copy(
+                                isSelected: isSelected,
+                                color: filterChip.color,
+                                image: filterChip.image,
+                                label: filterChip.label,
+                              )
+                            : otherChip;
+                      }).toList();
+                    });
+                  },
                   selected: filterChip.isSelected,
                   checkmarkColor: filterChip.color,
                   selectedColor: const Color.fromARGB(255, 201, 114, 107),
