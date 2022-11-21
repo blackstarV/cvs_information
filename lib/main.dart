@@ -1,10 +1,8 @@
 import 'package:cvs_information/Screens/main_page.dart';
 import 'package:cvs_information/Screens/onboarding_page.dart';
-import 'package:cvs_information/models/productCU.dart';
-import 'package:cvs_information/models/productGS25.dart';
 import 'package:cvs_information/services/geolocator_service.dart';
 import 'package:cvs_information/services/places_service.dart';
-import 'package:cvs_information/services/productCU_service.dart';
+import 'package:cvs_information/services/productAll_service.dart';
 
 import 'package:flutter/material.dart';
 import 'package:cvs_information/color_schemes.g.dart';
@@ -30,13 +28,13 @@ class MyApp extends StatelessWidget {
 
   final locatorService = GeoLocatorService();
   final placesService = PlacesService();
-  final productCUService = ProductCUService();
+  final productAllService = ProductAllService();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         FutureProvider(
-          create: (context) => productCUService.getProducts(),
+          create: (context) => productAllService.getProducts(),
           initialData: null,
         ),
         FutureProvider(

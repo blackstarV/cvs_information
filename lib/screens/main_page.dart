@@ -1,13 +1,9 @@
-import 'package:cvs_information/models/productCU.dart';
+import 'package:cvs_information/models/ProductAll.dart';
 import 'package:cvs_information/screens/map_page.dart';
-import 'package:cvs_information/screens/wishlist_page.dart';
-import 'package:cvs_information/widgets/customscrollview.dart';
-import 'package:cvs_information/widgets/filter_chip_convenience.dart';
-import 'package:cvs_information/widgets/filter_chip_event.dart';
-import 'package:cvs_information/widgets/flexiblespace.dart';
 import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
 import 'package:cvs_information/widgets/scroll_hide.dart';
+import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -24,28 +20,67 @@ final ScrollController scrollController = ScrollController();
 class _MainPageState extends State<MainPage> {
   int index = 0;
   late List<Convenience> _conveniences;
-  late List<String> _filters;
+  late List<EventType> _eventTypes;
+  late List<String> _filtersCvs;
+  late List<String> _filtersEvent;
+  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
+  var items = <String>[];
+  TextEditingController editingController = TextEditingController(text: '');
   Iterable<Widget> get convenienceWidgets sync* {
     for (Convenience convenience in _conveniences) {
       yield Padding(
         padding: const EdgeInsets.all(2.0),
-        child: FilterChip(
-          avatar: CircleAvatar(child: Text(convenience.name[0].toUpperCase())),
+        child: ChoiceChip(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          avatar:
+              (convenience.image != '') ? Image.asset(convenience.image) : null,
           label: Text(convenience.name),
-          selected: _filters.contains(convenience.name),
+          selected: _filtersCvs.contains(convenience.name),
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
-                Provider.of<List<ProductCU>>(context, listen: false)
-                    .sort((b, a) => a.name.compareTo(b.name));
-                _filters.add(convenience.name);
+                _filtersCvs.clear();
+                _filtersCvs.add(convenience.name);
               } else {
-                Provider.of<List<ProductCU>>(context, listen: false)
-                    .sort((a, b) => a.name.compareTo(b.name));
-                _filters.removeWhere((String name) {
-                  return name == convenience.name;
-                });
+                if (_filtersCvs.contains('전체') == false) {
+                  _filtersCvs.removeWhere((String name) {
+                    return name == convenience.name;
+                  });
+                  _filtersCvs.add('전체');
+                }
               }
+              print(_filtersCvs);
+            });
+          },
+        ),
+      );
+    }
+  }
+
+  Iterable<Widget> get eventTypeWidgets sync* {
+    for (EventType eventType in _eventTypes) {
+      yield Padding(
+        padding: const EdgeInsets.all(2.0),
+        child: FilterChip(
+          shape:
+              RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
+          label: Text(eventType.name),
+          selected: _filtersEvent.contains(eventType.name),
+          onSelected: (bool selected) {
+            setState(() {
+              if (selected) {
+                _filtersEvent.clear();
+                _filtersEvent.add(eventType.name);
+              } else {
+                if (_filtersEvent.contains('전체') == false) {
+                  _filtersEvent.removeWhere((String name) {
+                    return name == eventType.name;
+                  });
+                  _filtersEvent.add('전체');
+                }
+              }
+              print(_filtersEvent);
             });
           },
         ),
@@ -56,22 +91,51 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    _filters = <String>[];
+    items.addAll(duplicateItems);
+    _filtersCvs = <String>['전체'];
+    _filtersEvent = <String>['전체'];
     _conveniences = <Convenience>[
-      const Convenience('CU'),
-      const Convenience('GS25'),
-      const Convenience('세븐일레븐'),
-      const Convenience('이마트24'),
-      const Convenience('미니스톱'),
+      const Convenience('전체', ''),
+      const Convenience('CU', 'images/cu.jpg'),
+      const Convenience('GS25', 'images/gs25.png'),
+      const Convenience('세븐일레븐', 'images/seven_eleven.png'),
+      const Convenience('이마트24', 'images/emart24.jpg'),
+      const Convenience('미니스톱', 'images/ministop.jpg'),
+    ];
+    _eventTypes = <EventType>[
+      const EventType('전체'),
+      const EventType('1+1'),
+      const EventType('2+1'),
+      const EventType('3+1'),
+      const EventType('할인'),
+      const EventType('덤증정'),
     ];
   }
 
   @override
   Widget build(BuildContext context) {
-    List newList = [
-      ...?Provider.of<List<ProductCU>?>(context, listen: false),
-      ...?Provider.of<List<ProductCU>?>(context, listen: false)
-    ];
+    void filterSearchResults(String query) {
+      List<String> dummySearchList = <String>[];
+      dummySearchList.addAll(duplicateItems);
+      if (query.isNotEmpty) {
+        List<String> dummyListData = <String>[];
+        dummySearchList.forEach((item) {
+          if (item.contains(query)) {
+            dummyListData.add(item);
+          }
+        });
+        setState(() {
+          items.clear();
+          items.addAll(dummyListData);
+        });
+        return;
+      } else {
+        setState(() {
+          items.clear();
+          items.addAll(duplicateItems);
+        });
+      }
+    }
 
     final screens = [
       NestedScrollView(
@@ -81,7 +145,7 @@ class _MainPageState extends State<MainPage> {
         headerSliverBuilder: (context, innerBoxIsScrolled) {
           return [
             SliverAppBar(
-                shape: RoundedRectangleBorder(
+                shape: const RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.vertical(bottom: Radius.circular(20))),
                 collapsedHeight: 245, // 접힌 높이
@@ -102,8 +166,13 @@ class _MainPageState extends State<MainPage> {
                           // 제품명 검색창
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: TextField(
+                            onChanged: (value) {
+                              filterSearchResults(value);
+                            },
+                            controller: editingController,
                             decoration: InputDecoration(
                                 suffixIcon: Icon(Icons.search),
+                                labelText: '검색',
                                 hintText: '제품명',
                                 border: OutlineInputBorder(
                                   borderRadius: BorderRadius.circular(25),
@@ -119,7 +188,7 @@ class _MainPageState extends State<MainPage> {
                             // 행사 필터 Chip
                             padding: EdgeInsets.symmetric(horizontal: 20),
                             scrollDirection: Axis.horizontal,
-                            child: FilterChipEvent()),
+                            child: Wrap(children: eventTypeWidgets.toList())),
                       ],
                     )))
           ];
@@ -136,12 +205,30 @@ class _MainPageState extends State<MainPage> {
                     return Container(
                         decoration: const BoxDecoration(
                             color: Color.fromARGB(255, 224, 146, 146)),
-                        child: (newList != null)
+                        child: (Provider.of<List<ProductAll>?>(context,
+                                    listen: false) !=
+                                null)
                             ? GridTile(
-                                child: Center(child: Text(newList[index].name)))
+                                child: /*Image.network(
+                                    'https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8801045303062.jpg',
+                                    fit: BoxFit.scaleDown)*/
+                                    Text(Provider.of<List<ProductAll>>(context,
+                                            listen: false)[index]
+                                        .name),
+                                /*header:
+                                    Text('1+1'), // 1+1 2+1 3+1 할인 덤증정 색깔 구분 예정
+
+                                footer: GridTileBar(
+                                    leading: FavoriteButton(
+                                      valueChanged: (_isFavorite) {},
+                                    ),
+                                    title: Text(items[index])),*/
+                              )
                             : const Center(child: CircularProgressIndicator()));
                   },
-                  childCount: newList.length,
+                  childCount:
+                      Provider.of<List<ProductAll>?>(context, listen: false)
+                          ?.length,
                 ));
           }),
         ]),
@@ -164,23 +251,22 @@ class _MainPageState extends State<MainPage> {
                       onTap: () {}, // 이벤트 페이지 링크로 접속
                     ));
                   })),
-              bottomNavigationBar: const SingleChildScrollView(
+              bottomNavigationBar: SingleChildScrollView(
                   // 편의점 필터 Chip
                   padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
                   scrollDirection: Axis.horizontal,
-                  child: FilterChipConvenience()),
+                  child: Wrap(children: convenienceWidgets.toList())),
             ),
           ),
         ],
       ),
       const MapPage(),
-      const WishlistPage()
     ];
     ////////////////////////
 
     return Scaffold(
       body: screens[index],
-      drawer: const NavigationDrawer(),
+      drawer: NavigationDrawer(),
       bottomNavigationBar: ScrollToHideWidget(
           scrollController: scrollController,
           child: NavigationBar(
@@ -193,7 +279,6 @@ class _MainPageState extends State<MainPage> {
               NavigationDestination(
                   icon: Icon(Icons.event_note_sharp), label: '이벤트'),
               NavigationDestination(icon: Icon(Icons.map), label: '지도'),
-              NavigationDestination(icon: Icon(Icons.favorite), label: '찜'),
             ],
           )),
       floatingActionButton: ScrollToHideWidget(
@@ -209,12 +294,18 @@ class _MainPageState extends State<MainPage> {
               builder: (context) => const MemberShipWidget()),
         ),
       ),
-      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButtonLocation: FloatingActionButtonLocation.endFloat,
     );
   }
 }
 
 class Convenience {
-  const Convenience(this.name);
+  const Convenience(this.name, this.image);
+  final String name;
+  final String image;
+}
+
+class EventType {
+  const EventType(this.name);
   final String name;
 }

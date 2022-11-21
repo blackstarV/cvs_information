@@ -13,6 +13,7 @@ class PrivacyPolicyPage extends StatelessWidget {
         title: const Text('개인정보 처리방침'),
       ),
       body: Container(
+          padding: const EdgeInsets.fromLTRB(30, 0, 30, 0),
           alignment: Alignment.center,
           child: SingleChildScrollView(child: Text(privacyPolicy))),
     );

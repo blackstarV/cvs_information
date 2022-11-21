@@ -1,5 +1,8 @@
+import 'package:cvs_information/widgets/membership_kakao.dart';
 import 'package:cvs_information/widgets/membership_kt.dart';
 import 'package:cvs_information/widgets/membership_lguplus.dart';
+import 'package:cvs_information/widgets/membership_naver.dart';
+import 'package:cvs_information/widgets/membership_skt.dart';
 import 'package:flutter/material.dart';
 
 class MemberShipWidget extends StatefulWidget {
@@ -14,17 +17,11 @@ class _MemberShipWidgetState extends State<MemberShipWidget> {
   final List<double> opacity = [1, 0.3, 0.3, 0.3, 0.3];
 
   final screens = [
-    Container(
-      height: 180,
-    ),
+    const SKTScreen(),
     const KTScreen(),
     const LGUPlusScreen(),
-    Container(
-      height: 180,
-    ),
-    Container(
-      height: 180,
-    ),
+    const NaverScreen(),
+    const KakaoScreen(),
   ];
 
   @override
