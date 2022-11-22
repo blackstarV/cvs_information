@@ -39,7 +39,7 @@ dependencies:
   google_maps_flutter: ^2.2.0 # 구글 맵 사용
   geolocator: ^9.0.2 # 현재 위치 불러오기 
   provider: ^6.0.3 # provider를 통한 관심사 분리, 데이터 공유, 간결한 코드 (데이터의 생산과 소비)
-  url_launcher: ^6.1.5 # url 접속
+  url_launcher: ^6.1.7 # url 접속
   http: ^0.13.5 # http 사용
   introduction_screen: ^3.0.2 # 소개 화면 
   sliding_up_panel: ^2.0.0+1 # Sliding Up Panel 사용

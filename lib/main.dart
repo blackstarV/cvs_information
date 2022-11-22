@@ -1,5 +1,6 @@
 import 'package:cvs_information/Screens/main_page.dart';
 import 'package:cvs_information/Screens/onboarding_page.dart';
+import 'package:cvs_information/services/event_service.dart';
 import 'package:cvs_information/services/geolocator_service.dart';
 import 'package:cvs_information/services/places_service.dart';
 import 'package:cvs_information/services/productAll_service.dart';
@@ -29,12 +30,17 @@ class MyApp extends StatelessWidget {
   final locatorService = GeoLocatorService();
   final placesService = PlacesService();
   final productAllService = ProductAllService();
+  final eventService = EventService();
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
       providers: [
         FutureProvider(
           create: (context) => productAllService.getProducts(),
+          initialData: null,
+        ),
+        FutureProvider(
+          create: (context) => eventService.getEvents(),
           initialData: null,
         ),
         FutureProvider(

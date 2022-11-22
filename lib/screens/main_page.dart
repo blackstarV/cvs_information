@@ -1,4 +1,4 @@
-import 'package:cvs_information/models/ProductAll.dart';
+import 'package:cvs_information/models/productAll.dart';
 import 'package:cvs_information/screens/map_page.dart';
 import 'package:cvs_information/widgets/membership.dart';
 import 'package:cvs_information/widgets/navigation_drawer.dart';
@@ -6,6 +6,8 @@ import 'package:cvs_information/widgets/scroll_hide.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+
+import '../models/event.dart';
 
 class MainPage extends StatefulWidget {
   const MainPage({super.key});
@@ -206,28 +208,41 @@ class _MainPageState extends State<MainPage> {
                         decoration: const BoxDecoration(
                             color: Color.fromARGB(255, 224, 146, 146)),
                         child: (Provider.of<List<ProductAll>?>(context,
-                                    listen: false) !=
+                                    listen: true) !=
                                 null)
                             ? GridTile(
-                                child: /*Image.network(
+                                child: Center(
+                                  child: Text(Provider.of<List<ProductAll>>(
+                                          context,
+                                          listen: false)[index]
+                                      .name),
+                                ),
+                                /*Image.network(
                                     'https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8801045303062.jpg',
                                     fit: BoxFit.scaleDown)*/
-                                    Text(Provider.of<List<ProductAll>>(context,
-                                            listen: false)[index]
-                                        .name),
-                                /*header:
-                                    Text('1+1'), // 1+1 2+1 3+1 할인 덤증정 색깔 구분 예정
+
+                                header: Text(Provider.of<List<ProductAll>>(
+                                        context,
+                                        listen: false)[index]
+                                    .type), // 1+1 2+1 3+1 할인 덤증정 색깔 구분 예정
 
                                 footer: GridTileBar(
                                     leading: FavoriteButton(
-                                      valueChanged: (_isFavorite) {},
+                                      valueChanged: (_isFavorite) {
+                                        Provider.of<List<ProductAll>>(context,
+                                                listen: false)[index]
+                                            .isFavorite = _isFavorite;
+                                      },
                                     ),
-                                    title: Text(items[index])),*/
+                                    title: Text(Provider.of<List<ProductAll>>(
+                                            context,
+                                            listen: false)[index]
+                                        .name)),
                               )
                             : const Center(child: CircularProgressIndicator()));
                   },
                   childCount:
-                      Provider.of<List<ProductAll>?>(context, listen: false)
+                      Provider.of<List<ProductAll>?>(context, listen: true)
                           ?.length,
                 ));
           }),
@@ -240,16 +255,58 @@ class _MainPageState extends State<MainPage> {
             child: Scaffold(
               body: ListView.builder(
                   controller: scrollController,
-                  itemCount: 20,
+                  itemCount:
+                      Provider.of<List<Event>?>(context, listen: true)?.length,
                   itemBuilder: ((context, index) {
                     return Card(
-                        child: ListTile(
-                      leading: const Icon(
-                          size: 60, Icons.image), // 이벤트 페이지 사진 (Image로 대체 예정)
-                      title: const Text('Title'), // 이벤트 페이지 제목
-                      subtitle: const Text("subTitle"), // 이벤트 페이지 부제목
-                      onTap: () {}, // 이벤트 페이지 링크로 접속
-                    ));
+                        child:
+                            (Provider.of<List<Event>?>(context, listen: true) !=
+                                    null)
+                                ? ListTile(
+                                    leading: (Provider.of<List<Event>>(context,
+                                                    listen: false)[index]
+                                                .company ==
+                                            'CU')
+                                        ? Image.asset('images/cu.jpg',
+                                            width: 40)
+                                        : (Provider.of<List<Event>>(context,
+                                                        listen: false)[index]
+                                                    .company ==
+                                                'GS25')
+                                            ? Image.asset('images/gs25.png',
+                                                width: 40)
+                                            : (Provider.of<List<Event>>(context,
+                                                            listen:
+                                                                false)[index]
+                                                        .company ==
+                                                    '세븐일레븐')
+                                                ? Image.asset('images/seven_eleven.png', width: 40)
+                                                : (Provider.of<List<Event>>(context, listen: false)[index].company == '이마트24')
+                                                    ? Image.asset('images/emart24.jpg', width: 40)
+                                                    : (Provider.of<List<Event>>(context, listen: false)[index].company == '미니스톱')
+                                                        ? Image.asset('images/emart24.jpg', width: 40)
+                                                        : Image.asset('', width: 40), // 이벤트 페이지 사진 (Image로 대체 예정)
+                                    title: Text(Provider.of<List<Event>>(
+                                            context,
+                                            listen: false)[index]
+                                        .name),
+                                    onTap: () {
+                                      Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) =>
+                                                  SingleChildScrollView(
+                                                    child: Image.network(
+                                                        '${Provider.of<List<Event>>(context, listen: false)[index].imageURL}',
+                                                        fit: BoxFit.scaleDown),
+                                                  )));
+                                      /*Image.network(
+                                        '${Provider.of<List<Event>>(context, listen: false)[index].imageURL}',
+                                        fit: BoxFit
+                                            .scaleDown),*/
+                                    }, // 이벤트 페이지 링크로 접속
+                                  )
+                                : Center(child: CircularProgressIndicator()));
                   })),
               bottomNavigationBar: SingleChildScrollView(
                   // 편의점 필터 Chip

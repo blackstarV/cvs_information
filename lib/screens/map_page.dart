@@ -154,7 +154,7 @@ class _MapPageState extends State<MapPage> {
                                             trailing: IconButton(
                                               icon: const Icon(
                                                   Icons.info_outline),
-                                              onPressed: () {
+                                              onPressed: () async {
                                                 _launchMapsUrl(
                                                     places[index].place_url);
                                               },
@@ -196,10 +196,9 @@ class _MapPageState extends State<MapPage> {
   }
 
   // ignore: non_constant_identifier_names
-  void _launchMapsUrl(String place_url) async {
-    if (await canLaunchUrl(Uri.parse(place_url))) {
-      await launchUrl(Uri.parse(place_url));
-    } else {
+  Future<void> _launchMapsUrl(String place_url) async {
+    if (!await launchUrl(Uri.parse(place_url),
+        mode: LaunchMode.externalApplication)) {
       throw ScaffoldMessenger.of(context).showSnackBar(SnackBar(
           content: Text('불러올 수 없습니다.\n$place_url'),
           duration: const Duration(seconds: 1)));

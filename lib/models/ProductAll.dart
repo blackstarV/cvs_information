@@ -4,7 +4,7 @@ class ProductAll {
   final int price; // 가격
   final String imageURL; // 이미지 링크
   final String company; // 회사
-  final bool isFavorite = false; // 찜 기능
+  bool isFavorite = false; // 찜 기능
 
   ProductAll(
       {required this.name,
@@ -16,7 +16,7 @@ class ProductAll {
   ProductAll.fromJson(Map<dynamic, dynamic> parsedJson)
       : name = parsedJson['name'],
         type = parsedJson['eventType'],
-        price = parsedJson['price'],
+        price = int.parse(parsedJson['price']),
         imageURL = parsedJson['imageURL'],
         company = parsedJson['company'];
 }
