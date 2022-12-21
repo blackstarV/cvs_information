@@ -18,6 +18,10 @@
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
 	<string>$(FLUTTER_BUILD_NAME)</string>
+	<key>GADApplicationIdentifier</key>
+	<string>ca-app-pub-2546553902427340~4087162707</string>
+	<key>NSUserTrackingUsageDescription</key>
+	<string>This identifier will be used to deliver personalized ads to you.</string>
 	<key>CFBundleSignature</key>
 	<string>????</string>
 	<key>CFBundleVersion</key>
@@ -49,5 +53,7 @@
 	<true/>
 	<key>NSLocationWhenInUseUsageDescription</key>
 	<string>This app needs access to location when open.</string>
+	<key>io.flutter.embedded_views_preview</key>
+	<true/>
 </dict>
 </plist>

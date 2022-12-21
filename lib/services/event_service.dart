@@ -11,8 +11,7 @@ class EventService {
     //http api 요청
 
     var response = await http.get(
-        Uri.parse(
-            'https://cvsinformation.herokuapp.com/cvsinfo/EventInfo/?format=json'),
+        Uri.parse('http://222.118.240.100:8000/cvsinfo/EventInfo/?format=json'),
         headers: headers);
     var json =
         convert.jsonDecode(utf8.decode(response.bodyBytes)); // json -> 다트 변환

@@ -38,7 +38,7 @@ dependencies:
   cupertino_icons: ^1.0.2 # 아이폰 디자인 사용
   google_maps_flutter: ^2.2.0 # 구글 맵 사용
   geolocator: ^9.0.2 # 현재 위치 불러오기 
-  provider: ^6.0.3 # provider를 통한 관심사 분리, 데이터 공유, 간결한 코드 (데이터의 생산과 소비)
+  provider: ^6.0.5 # provider를 통한 관심사 분리, 데이터 공유, 간결한 코드 (데이터의 생산과 소비)
   url_launcher: ^6.1.7 # url 접속
   http: ^0.13.5 # http 사용
   introduction_screen: ^3.0.2 # 소개 화면 
@@ -48,6 +48,7 @@ dependencies:
   shared_preferences: ^2.0.15 # 저장,불러오기 기능
   external_app_launcher: ^3.1.0 # 외부 앱 실행기
   favorite_button: ^0.0.4 # favorite button
+  intl: ^0.17.0 # number format
 dev_dependencies:
   flutter_test:
     sdk: flutter
@@ -73,16 +74,35 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
       - images/convenience_5.png
-      - images/cu.jpg
+      - images/cu.png
       - images/gs25.png
       - images/seven_eleven.png
-      - images/emart24.jpg
-      - images/ministop.jpg
+      - images/emart24.png
+      - images/ministop.png
       - images/naver.jpg
       - images/skt.jpg
       - images/kt.jpg
       - images/lguplus.png
-      - images/kakaopay.jpg   
+      - images/kakaopay.jpg
+      - images/24h_on.png
+      - images/24h_off.png
+      - images/atm_on.png
+      - images/atm_off.png
+      - images/coffee_on.png
+      - images/coffee_off.png
+      - images/fried_on.png
+      - images/fried_off.png
+      - images/lotto_on.png
+      - images/lotto_off.png
+      - images/parcel_on.png
+      - images/parcel_off.png
+      - images/toto_on.png
+      - images/toto_off.png
+      - images/1+1.png
+      - images/2+1.png
+      - images/3+1.png
+      - images/sale.png
+      - images/bonusgift.png
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 

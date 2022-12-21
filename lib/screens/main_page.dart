@@ -5,6 +5,7 @@ import 'package:cvs_information/widgets/navigation_drawer.dart';
 import 'package:cvs_information/widgets/scroll_hide.dart';
 import 'package:favorite_button/favorite_button.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 
 import '../models/event.dart';
@@ -23,11 +24,14 @@ class _MainPageState extends State<MainPage> {
   int index = 0;
   late List<Convenience> _conveniences;
   late List<EventType> _eventTypes;
-  late List<String> _filtersCvs;
-  late List<String> _filtersEvent;
-  final duplicateItems = List<String>.generate(10000, (i) => "Item $i");
-  var items = <String>[];
+  late List<String> _filtersCompany;
+  late List<String> _filtersType;
+  List<ProductAll> duplicateItems = List<ProductAll>.empty();
+  var items = <ProductAll>[];
+  var numberFormat = NumberFormat('###,###,###,###');
+  String searchValue = '';
   TextEditingController editingController = TextEditingController(text: '');
+
   Iterable<Widget> get convenienceWidgets sync* {
     for (Convenience convenience in _conveniences) {
       yield Padding(
@@ -38,21 +42,22 @@ class _MainPageState extends State<MainPage> {
           avatar:
               (convenience.image != '') ? Image.asset(convenience.image) : null,
           label: Text(convenience.name),
-          selected: _filtersCvs.contains(convenience.name),
+          selected: _filtersCompany.contains(convenience.name),
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
-                _filtersCvs.clear();
-                _filtersCvs.add(convenience.name);
+                _filtersCompany.clear();
+                _filtersCompany.add(convenience.name);
               } else {
-                if (_filtersCvs.contains('전체') == false) {
-                  _filtersCvs.removeWhere((String name) {
+                if (_filtersCompany.contains('전체') == false) {
+                  _filtersCompany.removeWhere((String name) {
                     return name == convenience.name;
                   });
-                  _filtersCvs.add('전체');
+                  _filtersCompany.add('전체');
                 }
               }
-              print(_filtersCvs);
+              print(_filtersCompany);
+              filterSearchResults(searchValue);
             });
           },
         ),
@@ -68,21 +73,22 @@ class _MainPageState extends State<MainPage> {
           shape:
               RoundedRectangleBorder(borderRadius: BorderRadius.circular(16.0)),
           label: Text(eventType.name),
-          selected: _filtersEvent.contains(eventType.name),
+          selected: _filtersType.contains(eventType.name),
           onSelected: (bool selected) {
             setState(() {
               if (selected) {
-                _filtersEvent.clear();
-                _filtersEvent.add(eventType.name);
+                _filtersType.clear();
+                _filtersType.add(eventType.name);
               } else {
-                if (_filtersEvent.contains('전체') == false) {
-                  _filtersEvent.removeWhere((String name) {
+                if (_filtersType.contains('전체') == false) {
+                  _filtersType.removeWhere((String name) {
                     return name == eventType.name;
                   });
-                  _filtersEvent.add('전체');
+                  _filtersType.add('전체');
                 }
               }
-              print(_filtersEvent);
+              print(_filtersType);
+              filterSearchResults(searchValue);
             });
           },
         ),
@@ -93,16 +99,15 @@ class _MainPageState extends State<MainPage> {
   @override
   void initState() {
     super.initState();
-    items.addAll(duplicateItems);
-    _filtersCvs = <String>['전체'];
-    _filtersEvent = <String>['전체'];
+    _filtersCompany = <String>['전체'];
+    _filtersType = <String>['전체'];
     _conveniences = <Convenience>[
       const Convenience('전체', ''),
-      const Convenience('CU', 'images/cu.jpg'),
+      const Convenience('CU', 'images/cu.png'),
       const Convenience('GS25', 'images/gs25.png'),
-      const Convenience('세븐일레븐', 'images/seven_eleven.png'),
-      const Convenience('이마트24', 'images/emart24.jpg'),
-      const Convenience('미니스톱', 'images/ministop.jpg'),
+      const Convenience('7-ELEVEn', 'images/seven_eleven.png'),
+      const Convenience('emart24', 'images/emart24.png'),
+      const Convenience('MINISTOP', 'images/ministop.png'),
     ];
     _eventTypes = <EventType>[
       const EventType('전체'),
@@ -110,33 +115,77 @@ class _MainPageState extends State<MainPage> {
       const EventType('2+1'),
       const EventType('3+1'),
       const EventType('할인'),
-      const EventType('덤증정'),
     ];
+  }
+
+  void filterSearchResults(String query) {
+    List<ProductAll> dummySearchList = <ProductAll>[];
+    dummySearchList.addAll(duplicateItems);
+
+    if (query.isNotEmpty) {
+      List<ProductAll> dummyListData = <ProductAll>[];
+      dummySearchList.forEach((item) {
+        if (item.name.contains(query)) {
+          if (_filtersCompany[0] == '전체') {
+            if (_filtersType[0] == '전체') {
+              dummyListData.add(item);
+            } else if (item.type.contains(_filtersType[0])) {
+              dummyListData.add(item);
+            } else {}
+          } else if (item.company.contains(_filtersCompany[0])) {
+            // 필터 돼있는 회사랑 같은 회사면 item에 넣음
+
+            if (_filtersType[0] == '전체') {
+              dummyListData.add(item);
+            } else if (item.type.contains(_filtersType[0])) {
+              dummyListData.add(item);
+            } else {}
+          } else {}
+        }
+      });
+
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+      return;
+    } else {
+      List<ProductAll> dummyListData = <ProductAll>[];
+      dummySearchList.forEach((item) {
+        if (item.name.contains(query)) {
+          if (_filtersCompany[0] == '전체') {
+            if (_filtersType[0] == '전체') {
+              dummyListData.add(item);
+            } else if (item.type.contains(_filtersType[0])) {
+              dummyListData.add(item);
+            } else {}
+          } else if (item.company.contains(_filtersCompany[0])) {
+            // 필터 돼있는 회사랑 같은 회사면 item에 넣음
+
+            if (_filtersType[0] == '전체') {
+              dummyListData.add(item);
+            } else if (item.type.contains(_filtersType[0])) {
+              dummyListData.add(item);
+            } else {}
+          } else {}
+        }
+      });
+      setState(() {
+        items.clear();
+        items.addAll(dummyListData);
+      });
+    }
   }
 
   @override
   Widget build(BuildContext context) {
-    void filterSearchResults(String query) {
-      List<String> dummySearchList = <String>[];
-      dummySearchList.addAll(duplicateItems);
-      if (query.isNotEmpty) {
-        List<String> dummyListData = <String>[];
-        dummySearchList.forEach((item) {
-          if (item.contains(query)) {
-            dummyListData.add(item);
-          }
-        });
-        setState(() {
-          items.clear();
-          items.addAll(dummyListData);
-        });
-        return;
-      } else {
-        setState(() {
-          items.clear();
-          items.addAll(duplicateItems);
-        });
-      }
+    if (duplicateItems.isEmpty &&
+        Provider.of<List<ProductAll>?>(context, listen: true) != null) {
+      duplicateItems = List<ProductAll>.generate(
+          Provider.of<List<ProductAll>>(context, listen: true).length,
+          (index) =>
+              Provider.of<List<ProductAll>>(context, listen: false)[index]);
+      items.addAll(duplicateItems);
     }
 
     final screens = [
@@ -150,8 +199,8 @@ class _MainPageState extends State<MainPage> {
                 shape: const RoundedRectangleBorder(
                     borderRadius:
                         BorderRadius.vertical(bottom: Radius.circular(20))),
-                collapsedHeight: 245, // 접힌 높이
-                expandedHeight: 245, // 펴진 높이
+                collapsedHeight: 246, // 접힌 높이
+                expandedHeight: 246, // 펴진 높이
                 floating: true,
                 snap: true,
                 centerTitle: true,
@@ -169,7 +218,8 @@ class _MainPageState extends State<MainPage> {
                           margin: EdgeInsets.fromLTRB(10, 10, 10, 10),
                           child: TextField(
                             onChanged: (value) {
-                              filterSearchResults(value);
+                              searchValue = value;
+                              filterSearchResults(searchValue);
                             },
                             controller: editingController,
                             decoration: InputDecoration(
@@ -205,45 +255,38 @@ class _MainPageState extends State<MainPage> {
                 delegate: SliverChildBuilderDelegate(
                   (context, index) {
                     return Container(
-                        decoration: const BoxDecoration(
-                            color: Color.fromARGB(255, 224, 146, 146)),
-                        child: (Provider.of<List<ProductAll>?>(context,
-                                    listen: true) !=
-                                null)
+                        padding: EdgeInsets.fromLTRB(3, 3, 3, 3),
+                        child: (items != null)
                             ? GridTile(
-                                child: Center(
-                                  child: Text(Provider.of<List<ProductAll>>(
-                                          context,
-                                          listen: false)[index]
-                                      .name),
+                                child: Image.network('${items[index].imageURL}',
+                                    fit: BoxFit.scaleDown),
+                                header: Container(
+                                  alignment: Alignment.topLeft,
+                                  child: ClipRRect(
+                                    borderRadius: BorderRadius.circular(5.0),
+                                    child: items[index].typeImage,
+                                  ),
                                 ),
-                                /*Image.network(
-                                    'https://tqklhszfkvzk6518638.cdn.ntruss.com/product/8801045303062.jpg',
-                                    fit: BoxFit.scaleDown)*/
-
-                                header: Text(Provider.of<List<ProductAll>>(
-                                        context,
-                                        listen: false)[index]
-                                    .type), // 1+1 2+1 3+1 할인 덤증정 색깔 구분 예정
-
-                                footer: GridTileBar(
-                                    leading: FavoriteButton(
-                                      valueChanged: (_isFavorite) {
-                                        Provider.of<List<ProductAll>>(context,
-                                                listen: false)[index]
-                                            .isFavorite = _isFavorite;
-                                      },
+                                footer: Container(
+                                  height: 60,
+                                  child: GridTileBar(
+                                    title: (items[index].name.length >= 10)
+                                        ? Text(
+                                            '${items[index].name.substring(0, 10)}\n${items[index].name.substring(10)}')
+                                        : Text(items[index].name),
+                                    subtitle: Text(
+                                        '${numberFormat.format(items[index].price)}원'),
+                                    backgroundColor: Colors.black54,
+                                    trailing: ClipRRect(
+                                      borderRadius: BorderRadius.circular(8.0),
+                                      child: items[index].companyImage,
                                     ),
-                                    title: Text(Provider.of<List<ProductAll>>(
-                                            context,
-                                            listen: false)[index]
-                                        .name)),
+                                  ),
+                                ),
                               )
                             : const Center(child: CircularProgressIndicator()));
                   },
-                  childCount:
-                      Provider.of<List<ProductAll>?>(context, listen: true)
-                          ?.length,
+                  childCount: items.length,
                 ));
           }),
         ]),
@@ -263,29 +306,12 @@ class _MainPageState extends State<MainPage> {
                             (Provider.of<List<Event>?>(context, listen: true) !=
                                     null)
                                 ? ListTile(
-                                    leading: (Provider.of<List<Event>>(context,
-                                                    listen: false)[index]
-                                                .company ==
-                                            'CU')
-                                        ? Image.asset('images/cu.jpg',
-                                            width: 40)
-                                        : (Provider.of<List<Event>>(context,
-                                                        listen: false)[index]
-                                                    .company ==
-                                                'GS25')
-                                            ? Image.asset('images/gs25.png',
-                                                width: 40)
-                                            : (Provider.of<List<Event>>(context,
-                                                            listen:
-                                                                false)[index]
-                                                        .company ==
-                                                    '세븐일레븐')
-                                                ? Image.asset('images/seven_eleven.png', width: 40)
-                                                : (Provider.of<List<Event>>(context, listen: false)[index].company == '이마트24')
-                                                    ? Image.asset('images/emart24.jpg', width: 40)
-                                                    : (Provider.of<List<Event>>(context, listen: false)[index].company == '미니스톱')
-                                                        ? Image.asset('images/emart24.jpg', width: 40)
-                                                        : Image.asset('', width: 40), // 이벤트 페이지 사진 (Image로 대체 예정)
+                                    leading: ClipRRect(
+                                      borderRadius: BorderRadius.circular(5.0),
+                                      child: Provider.of<List<Event>>(context,
+                                              listen: false)[index]
+                                          .companyImage,
+                                    ),
                                     title: Text(Provider.of<List<Event>>(
                                             context,
                                             listen: false)[index]
@@ -300,19 +326,10 @@ class _MainPageState extends State<MainPage> {
                                                         '${Provider.of<List<Event>>(context, listen: false)[index].imageURL}',
                                                         fit: BoxFit.scaleDown),
                                                   )));
-                                      /*Image.network(
-                                        '${Provider.of<List<Event>>(context, listen: false)[index].imageURL}',
-                                        fit: BoxFit
-                                            .scaleDown),*/
-                                    }, // 이벤트 페이지 링크로 접속
+                                    },
                                   )
                                 : Center(child: CircularProgressIndicator()));
                   })),
-              bottomNavigationBar: SingleChildScrollView(
-                  // 편의점 필터 Chip
-                  padding: EdgeInsets.fromLTRB(10, 0, 10, 0),
-                  scrollDirection: Axis.horizontal,
-                  child: Wrap(children: convenienceWidgets.toList())),
             ),
           ),
         ],
@@ -329,8 +346,14 @@ class _MainPageState extends State<MainPage> {
           child: NavigationBar(
             height: 55,
             selectedIndex: index,
-            onDestinationSelected: (index) =>
-                setState(() => this.index = index),
+            onDestinationSelected: (index) => setState(() {
+              if (index == 0) {
+                scrollController.animateTo(0,
+                    duration: Duration(milliseconds: 500),
+                    curve: Curves.easeIn);
+              }
+              this.index = index;
+            }),
             destinations: const [
               NavigationDestination(icon: Icon(Icons.home), label: '홈'),
               NavigationDestination(

@@ -22,14 +22,14 @@ class OnBoardingPage extends StatelessWidget {
                 decoration: getPageDecoration(),
               ),
               PageViewModel(
-                title: '각 편의점에 맞는 멤버쉽',
-                body: '어느 편의점엔 어떤 멤버쉽을 쓰는 지 모르는 당신을 위해 클릭 한번이면 바로 링크해드립니다.',
+                title: '각 편의점에 맞는 멤버십',
+                body: '통신사 멤버십부터 네이버, 카카오 멤버십까지',
                 image: buildImage(''),
                 decoration: getPageDecoration(),
               ),
               PageViewModel(
-                title: '제품 찜하기',
-                body: '자주 찾는 제품은 찜해서 행사가 있는지 확인해보세요.',
+                title: '모든 편의점 이벤트',
+                body: '이벤트 페이지도 확인해보세요!',
                 image: buildImage(''),
                 decoration: getPageDecoration(),
               ),

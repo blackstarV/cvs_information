@@ -63,6 +63,7 @@ class _MapPageState extends State<MapPage> {
                         height: MediaQuery.of(context).size.height,
                         width: MediaQuery.of(context).size.width,
                         child: GoogleMap(
+                          myLocationButtonEnabled: false,
                           myLocationEnabled: true,
                           initialCameraPosition: CameraPosition(
                               target: LatLng(currentPosition.latitude,
@@ -136,8 +137,40 @@ class _MapPageState extends State<MapPage> {
                                                                 CrossAxisAlignment
                                                                     .start,
                                                             children: [
-                                                              Text(places[index]
-                                                                  .address_name),
+                                                              Row(
+                                                                  mainAxisAlignment:
+                                                                      MainAxisAlignment
+                                                                          .spaceEvenly,
+                                                                  children: [
+                                                                    Image.asset(
+                                                                      'images/24h_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/parcel_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/coffee_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/fried_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/atm_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/lotto_off.png',
+                                                                      width: 30,
+                                                                    ),
+                                                                    Image.asset(
+                                                                      'images/toto_off.png',
+                                                                      width: 30,
+                                                                    )
+                                                                  ]),
                                                               (meters >= 1000)
                                                                   ? Text(
                                                                       '${(meters / 1000).toStringAsFixed(1)} km')
